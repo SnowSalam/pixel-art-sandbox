@@ -4,6 +4,8 @@ const inputWidth = document.getElementById('cells-wide');
 const inputHeight = document.getElementById('cells-height');
 const controlButton = document.getElementById('control-button');
 const clearButton = document.getElementById('clear-button');
+const saveButton = document.getElementById('save-button');
+const canvas = document.getElementById('canvas');
 
 controlButton.addEventListener('click', () => {
     if ('toggleAttribute' in HTMLElement.prototype) {
@@ -73,6 +75,39 @@ inputHeight.addEventListener('change', () => {
 
 clearButton.addEventListener('click', () => {
     createGrid(+inputWidth.value, +inputHeight.value);
+});
+
+saveButton.addEventListener('click', () => {
+    const width = +inputWidth.value;
+    const height = +inputHeight.value;
+
+    let pixel = document.querySelector('.pixel');
+    let pixelStyle = window.getComputedStyle(pixel);
+    const cellSize = parseInt(pixelStyle.width, 10);
+
+    canvas.width = width * cellSize;
+    canvas.height = width * cellSize;
+
+    pixel = null;
+    pixelStyle = null;
+
+    const ctx = canvas.getContext('2d');
+
+    const pixels = document.querySelectorAll('.pixel');
+
+    for (let row = 0; row < height; row++) {
+        for (let col = 0; col < width; col++) {
+            const pixel = pixels[row * width + col];
+            const color = window.getComputedStyle(pixel).backgroundColor;
+            ctx.fillStyle = color;
+            ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+    }
+
+    const link = document.createElement('a');
+    link.download = 'pixel-art.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
 });
 
 createGrid(32, 32);

@@ -75,6 +75,18 @@ h1 {
     display: none !important;
 }
 
+#save-button {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    top: 35px;
+    left: 210px;
+    background: #12c8be;
+    border: 2px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .cell-input {
     display: flex;
     flex-direction: column;
